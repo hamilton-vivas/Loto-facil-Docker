@@ -71,6 +71,14 @@ Este projeto consiste na modernização e conteinerização de um sistema legado
   <img src="src/loto-facil-docker.jpg" alt="Arquitetura Docker Compose com MySQL 5.7" width="484" height="566">
 </p>
 
+---
+
+## 📄 Documentação e Engenharia Reversa
+
+Este projeto foi mantido em sua estrutura original de código para fins de demonstração de infraestrutura e conteinerização local. Para compreender a estrutura interna do ecossistema legado, pontos críticos de melhoria e um plano completo de refatoração de software, acesse:
+
+👉 **[Diagnóstico Técnico e Análise de Arquitetura Backend](docs/analise-arquitetura.md)**
+
 
 ## 👨‍💻 Desenvolvedor
 * **GitHub:** [@hamilton-vivas](https://github.com)
