@@ -10,7 +10,7 @@
 	    $con = mysql_connect("db","root","root_password") or die ("PROBLEMA NA CONEX�O");
 	    $db = mysql_select_db("loto_facil",$con)  or die("BANCO DE DADOS N�O ENCONTRADO");
 	    //$db = mysql_select_db("teste",$con)  or die("BANCO DE DADOS N�O ENCONTRADO");
-	   
+
 	    return $db;
         }
 	  }
@@ -24,10 +24,10 @@
    function excluir($tabela,$campo,$valor)
 		 {$sql_excl = " delete from $tabela where $campo = $valor ";
 		  mysql_query($sql_excl) or die($mensagem);
-		  
+
 		  return $sucesso=true;
 		 }
-		 
+
 	// Consulta SQL com um LIKE para pesquisar parte do nome
    function localizar($tabela,$campo,$valor,$order)
 		 {$sql_loc = " select * from $tabela where $campo like '%$valor%' ";
@@ -37,7 +37,7 @@
            }
 		  // print $sql_loc;
       	  $result_loc = mysql_query($sql_loc) or die($mensagem='Erro consulta da fun��o localizar');
-      	  
+
           return $result_loc;
       }
 
@@ -67,7 +67,7 @@
 
      $result_concant = mysql_query($sql) or die($mensagem="CONSULTA CONCURSOS ANTERIORES FALHOU: Verifique BANCO DE DADOS (Loto F�cil)
       - TECLE VOLTAR do Navegador");
-      
+
 	 return $result_concant;
 	}
    }  // Fim classe Aposta
@@ -109,15 +109,23 @@
 
      $dados = file($arquivo_rec);
     //var_dump($dados);
-    
-    
+
+
     foreach($dados as $linha){
 
 	//Retirar os espa�os em branco no inicio e no final da string
 	$linha = trim($linha);
 
-	//Colocar em um array cada item separado pela virgula na string
-	$valor = explode(',', $linha);
+	if (empty($linha)) {
+		continue;
+	}
+
+	//Colocar em um array cada item separado pela virgula e limpar espaços extras
+	$valor = array_map('trim', explode(',', $linha));
+
+	if (count($valor) < 16) {
+		continue;
+	}
 //	var_dump($valor);
 
     $nr_concurso = $valor[0];
@@ -225,7 +233,7 @@
          }
        }
      }
-        
+
      return $quadro_loto;
 
     }
@@ -245,7 +253,7 @@
 // FIM GERA��O
 
 //   GRAVANDO RESULTADO DO �LTMO CONCURSO NA PRIMERIA_TUPLA
- 
+
      if ($result_e[1][2]==0) {
        $tupla[0] = $result_e[1][1];
     } else $tupla[0]=0;
@@ -316,9 +324,9 @@
 // FIM GRAVA��O PRIMEIRA_TUPLA
 
   return $tupla;
-  
+
   }  // Fim fun��o Marcar_tupla
-  
+
    function random_tupla($tupla_rec, $tipo_aposta_rec)
    {
 //   GERANDO VETOR ONDE SER� GRAVADO OS N�MEROS SORTEADOS PARA APOSTA DE 15 ou 16 N�MEROS
@@ -349,7 +357,7 @@
     for ($y=0; $y<$x; $y++) {
      $gera_final[$y]= $unico_gera[$indice_gera[$y]];
      } //  FIM for
-     
+
     $i=0;
     for ($y=0; $y<$x; $y++)  {
      for ($e=0; $e<=16; $e++) {
@@ -362,7 +370,7 @@
     } // Fim for
     $t=count($sort_prov);
   }  // FIM while
- 
+
 // ALTERA��O QUANTIDADE SORTEADA CONFORME TIPO DE APOSTA: 15 ou 16 dezenas
   if ($tipo_aposta_rec==1) {
  // Aposta de 15 dezenas
@@ -380,10 +388,10 @@
      }
 
      return $sorteio;
-     
+
     } // Fim func�o random_tupla
    }  //Fim Classe Vetor_tupla
-   
+
 
   class Vetor_nrsorteados extends Quadro_loto
   {
@@ -407,9 +415,9 @@
    } // Fim for
 
   return $vetsort;
-  
+
   }  // Fim fun��o gerar_vetsort
-  
+
   function random_vetsort($vetsort_rec, $tipo_aposta_rec, $sorteio)
    {
 
@@ -453,7 +461,7 @@
 
    $t=count($sort_prov);
  }  // FIM while
- 
+
 // ALTERA��O QUANTIDADE SORTEADA CONFORME TIPO DE APOSTA: 15 ou 16 dezenas
  if ($tipo_aposta_rec==1) {
  // Aposta de 15 dezenas
@@ -470,9 +478,9 @@
         $sorteio[$y]=null ;
         }
      }
-     
+
        return $sorteio;
-       
+
     } // Fim func�o random_vetsort
    }  //Fim Classe Vetor_nrsorteados
 
@@ -583,7 +591,7 @@
  {    private
 	 $acao,
      $titulo;
- 
+
   function abreHtml($titulo)
   {
     $resultado="
@@ -595,17 +603,17 @@
        <BODY BGCOLOR='#FFDEAD' TEXT='#000000'> ";
      return $resultado;
   }
-  
+
    function fechaHtml()
    {$resultado="
      </BODY>
      </HTML>  ";
     return $resultado;
    }
- 
+
    function abreFormulario($acao)
-   { $resultado="<FORM METHOD=POST ACTION='$acao'>"; 
-     return $resultado;   
+   { $resultado="<FORM METHOD=POST ACTION='$acao'>";
+     return $resultado;
    }
    function fechaFormulario()
    { $resultado="</FORM>";
@@ -682,7 +690,7 @@
     ";
      return $resultado;
    }
-   
+
   function linha_Menu_apostador($usuario)
    { $resultado="
      <TABLE align='left'>
@@ -696,7 +704,7 @@
     ";
      return $resultado;
    }
-   
+
   function linha_Sair()
    { $resultado="
      <TABLE align='center'>
@@ -719,7 +727,7 @@
      }
 
    if (!($result_loc=="")) {
-   
+
     $linha = mysql_fetch_array($result_loc);
     $cod_conc = $linha["cod_conc"];
     $nr_concurso = $linha["nr_concurso"];
@@ -840,7 +848,7 @@
 	 	<TD><INPUT TYPE='text' NAME='dez_15' VALUE='$dez_15'></TD>
 	   </TR>
              ";
-        
+
       return $resultado;
     }
 
@@ -893,7 +901,7 @@
     if ($tabela=="conc_ant"){
 	    $titulo="Concursos Anteriores - LOTOFACIL";
 	  }
-        
+
     $retornotela="<p class='titulo'><font color='#003399' size='5'><b>$titulo &nbsp Apostador: $usuario</b></font></p>";
 
 //    <td width='20' align='center'><font color='#CC0033'>#</font></td>
@@ -932,7 +940,7 @@
    while ($linha = mysql_fetch_array($r_result)) {
 
     $cortabela="#ADFF2F";
-    
+
 
     if ($tabela=="conc_ant") {
      $cod_conc = $linha["cod_conc"];
@@ -992,9 +1000,9 @@
 
     function tela_aposta_concant($r_result)
 	{
-	
+
 	  $retorno_linhas  = mysql_num_rows($r_result);
-	
+
      if ($retorno_linhas==0){
 	    $titulo="Sorteio acima <font color='#CC0033'>ATÉ HOJE NÃO FOI REPETIDO</font>  -
        Vefique ÚLTIMO CONCURSO cadastrado no sistema. '<font color='#CC0033'>APOSTA ÚNICA GERADA - APOSTA BOA !!!</font>'";
@@ -1220,7 +1228,7 @@
            $retornotela.="
             <td width='20' valign='top' align='center'>$dez_16</td> ";
             }
-            
+
      return $retornotela;
  }
 
@@ -1319,7 +1327,7 @@
   function telaLogin($usuario,$senha)
  	{
      $titulo="TELA LOGIN - SISTEMA LOTOFACIL";
-     
+
 	 $resultado="
 	 <TR>
 	 <TD colspan='2'><font color='#003399'><b>$titulo</b></font></TD>
@@ -1338,5 +1346,5 @@
 	}
 
  }
- 
+
  ?>
