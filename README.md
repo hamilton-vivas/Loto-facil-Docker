@@ -67,5 +67,10 @@ Este projeto consiste na modernização e conteinerização de um sistema legado
 
 ---
 
+<p align="center">
+  <img src="src/loto-facil-docker.jpg" alt="Arquitetura Docker Compose com MySQL 5.7" width="484" height="566">
+</p>
+
+
 ## 👨‍💻 Desenvolvedor
 * **GitHub:** [@hamilton-vivas](https://github.com)
