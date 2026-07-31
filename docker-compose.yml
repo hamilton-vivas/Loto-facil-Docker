@@ -1,0 +1,31 @@
+services:
+  # Servidor Web (Apache + PHP 5.6 com ext/mysql)
+  web:
+    build: .
+    container_name: meu_projeto_php_web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  # Banco de Dados (MySQL)
+  db:
+    image: mysql:5.7
+    container_name: meu_projeto_php_db
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password  # Senha do admin root
+      MYSQL_DATABASE: loto_facil          # Nome do banco de dados
+      MYSQL_USER: mimi                    # Usuário comum
+      MYSQL_PASSWORD: 1234                  # Senha do usuário comum
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Executa os scripts .sql na primeira inicializacao
+      - ./init-db:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:

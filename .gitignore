@@ -1,0 +1,10 @@
+# Ignorar arquivos do Docker
+.docker/
+.env
+
+# Ignorar o volume local do banco de dados
+mysql_data/
+
+# Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db
